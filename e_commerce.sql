@@ -121,7 +121,7 @@ supplier_pricing.PRO_ID = product.PRO_id;
 select supplier.* from supplier where supplier.supp_id in (
 select supp_id from supplier_pricing group by supp_id having count(supp_id) > 1) group by supplier.supp_id;
 
-select category.cat_id, category.cat_name, product.pro_name, (t2.min_price) as Min_Price 
+select category.cat_id, category.cat_name, min(t2.min_price) as Min_Price 
 from category inner join
 (select product.cat_id, product.pro_name, t1.* from product inner join
 (select pro_id, min(supp_price) as Min_Price from supplier_pricing group by pro_id) as t1 
@@ -132,3 +132,5 @@ select product.pro_id, product.pro_name from `order` inner join supplier_pricing
 supplier_pricing.PRICING_ID=`order`.PRICING_ID inner join product 
 on product.pro_id=supplier_pricing.pro_id where 
 `order`.ORD_DATE>"2021-10-05";
+
+select cus_name, cus_gender from customer where cus_name like 'A%';
