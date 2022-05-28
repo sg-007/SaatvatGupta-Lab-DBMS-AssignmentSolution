@@ -134,3 +134,16 @@ on product.pro_id=supplier_pricing.pro_id where
 `order`.ORD_DATE>"2021-10-05";
 
 select cus_name, cus_gender from customer where cus_name like 'A%';
+
+select supplier.supp_id, supplier.supp_name, t2.rat_ratstars,
+ Case when t2.rat_ratstars = 5 then 'Excellent service'
+ when t2.rat_ratstars >= 4 then 'Good service'
+ when t2.rat_ratstars > 2 then 'Average service'
+ else 'Poor service'
+ end as Type_of_service
+ from supplier inner join
+(select supplier_pricing.SUPP_ID, t1. rat_ratstars from supplier_pricing inner join
+(select `order`.ord_id, `order`.pricing_id, rating.RAT_RATSTARS from `order` inner join rating where
+`order`.ORD_ID = rating.ORD_ID) as t1
+where supplier_pricing.PRICING_ID = t1.PRICING_ID) as t2
+where supplier.supp_id = t2.supp_id;
